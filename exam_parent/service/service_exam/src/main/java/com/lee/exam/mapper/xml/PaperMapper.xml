@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lee.exam.mapper.PaperMapper">
+
+    <select id="listByPaperId" resultType="com.lee.exam.entity.Paper">
+        SELECT
+            bank.NAME as BankName,paper.*
+        FROM
+            bank,
+            paper
+        WHERE
+            bank.id = paper.bank_id
+          and paper.id=#{paperId}
+    </select>
+</mapper>

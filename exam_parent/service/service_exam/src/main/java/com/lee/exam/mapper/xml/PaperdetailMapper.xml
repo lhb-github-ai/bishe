@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lee.exam.mapper.PaperdetailMapper">
+
+    <select id="listPaperDetail" resultType="com.lee.exam.entity.Vo.PaperDetail">
+        SELECT
+            choice_question.question,
+            choice_question.analysis,
+            choice_question.answer,
+            choice_question.option_a,
+            choice_question.option_b,
+            choice_question.option_c,
+            choice_question.option_d,
+            paperdetail.`options`
+        FROM
+            paperdetail,
+            choice_question
+        WHERE
+            paperdetail.question_id = choice_question.id
+          AND paperdetail.paper_id=#{param1}
+          AND paperdetail.frequency=#{param2}
+          AND paperdetail.double_check=#{param3}
+    </select>
+    <select id="listPaperDetailPD" resultType="com.lee.exam.entity.Vo.PaperDetail">
+        SELECT
+            judge_question.question,
+            judge_question.analysis,
+            judge_question.answer,
+            paperdetail.`options`
+        FROM
+            paperdetail,
+            judge_question
+        WHERE
+            paperdetail.question_id = judge_question.id
+          AND paperdetail.paper_id=#{param1}
+          AND paperdetail.frequency=#{param2}
+          AND paperdetail.double_check=#{param3}
+    </select>
+</mapper>

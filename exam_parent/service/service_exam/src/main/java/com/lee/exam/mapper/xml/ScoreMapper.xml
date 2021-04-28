@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lee.exam.mapper.ScoreMapper">
+
+
+    <select id="getExamList" resultType="com.lee.exam.entity.Score">
+        SELECT
+            paper.paper_name,
+            score.*, student.student_name
+        FROM
+            paper,
+            score,
+            student
+      <where>
+          score.is_deleted=0
+          AND
+          score.paper_id = paper.id
+          AND student.id = score.student_id
+          <if test="PaperName!=null and PaperName!='' ">
+             AND  paper.paper_name like concat('%',#{PaperName},'%')
+          </if>
+          <if test="StudentName!=null and StudentName!='' ">
+              AND  student.student_name like concat('%',#{StudentName},'%')
+          </if>
+          <if test="authorId!=1">
+              AND  paper.author_id=#{authorId}
+          </if>
+      </where>
+        limit   #{current},#{limit};
+    </select>
+
+    <select id="totals" resultType="java.lang.Integer">
+        select count(*) from (    SELECT
+        paper.paper_name,
+        score.*, student.student_name
+        FROM
+        paper,
+        score,
+        student
+        <where>
+            score.is_deleted=0
+            AND
+            score.paper_id = paper.id
+            AND student.id = score.student_id
+            <if test="PaperName!=null and PaperName!='' ">
+                AND  paper.paper_name like concat('%',#{PaperName},'%')
+            </if>
+            <if test="StudentName!=null and StudentName!='' ">
+                AND  student.student_name like concat('%',#{StudentName},'%')
+            </if>
+            <if test="authorId!=1">
+                AND  paper.author_id=#{authorId}
+            </if>
+        </where>
+        )s
+    </select>
+</mapper>

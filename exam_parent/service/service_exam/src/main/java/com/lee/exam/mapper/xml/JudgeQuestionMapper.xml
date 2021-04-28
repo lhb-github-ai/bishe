@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lee.exam.mapper.JudgeQuestionMapper">
+
+    <select id="listById" resultType="com.lee.exam.entity.JudgeQuestion">
+        SELECT
+            judge_question.*, bank.name as bankName
+        FROM
+            judge_question, bank
+        where
+            bank.id = judge_question.bankId
+          AND judge_question.is_deleted=0
+          and  judge_question.id=#{id}
+    </select>
+
+    <select id="findQuestion" resultType="com.lee.exam.entity.JudgeQuestion">
+        SELECT
+        judge_question.*, bank.name as bankName
+        FROM
+        judge_question, bank
+        <where>
+            bank.id = judge_question.bankId
+            AND judge_question.is_deleted=0
+            <if test="question!=null and question!=''">
+                AND judge_question.question like concat('%',#{question},'%')
+            </if>
+            <if test="bankName!=null and bankName!=''">
+                AND bank.name =#{bankName}
+
+            </if>
+        </where>
+        limit   #{current},#{limit};
+    </select>
+
+    <select id="totals" resultType="java.lang.Integer">
+        select count(*) from (  SELECT
+        judge_question.*, bank.name as bankName
+        FROM
+        judge_question, bank
+        <where>
+            bank.id = judge_question.bankId
+            AND judge_question.is_deleted=0
+            <if test="question!=null and question!=''">
+                AND judge_question.question like concat('%',#{question},'%')
+            </if>
+            <if test="bankName!=null and bankName!=''">
+                AND bank.name =#{bankName}
+            </if>
+        </where>
+        )s
+    </select>
+</mapper>

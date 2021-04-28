@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lee.exam.mapper.PaperQuestionMapper">
+
+    <select id="listQuestion" resultType="com.lee.exam.entity.PaperQuestion">
+        SELECT
+            paper_question.*, choice_question.question AS QuestionName, choice_question.option_a,choice_question.option_b,choice_question.option_c,choice_question.option_d,choice_question.analysis,choice_question.answer,choice_question.gmt_modified as updateTime
+        FROM
+            paper_question,
+            choice_question
+        WHERE
+            choice_question.id = paper_question.question_id
+          AND choice_question.is_deleted = 0
+          AND paper_question.paerp_id = #{param1}
+          and paper_question.double_check=#{param2}
+          and paper_question.is_z_or_s=#{param3}
+    </select>
+    <select id="listJudgeQuestion" resultType="com.lee.exam.entity.PaperQuestion">
+        SELECT
+            paper_question.*, judge_question.question AS QuestionName ,judge_question.question,judge_question.answer,judge_question.gmt_modified as updateTime,judge_question.analysis
+        FROM
+            paper_question,
+            judge_question
+        WHERE
+            judge_question.id = paper_question.question_id
+          AND judge_question.is_deleted = 0
+          AND paper_question.paerp_id = #{param1}
+          and paper_question.double_check=#{param2}
+          and paper_question.is_z_or_s=#{param3}
+    </select>
+    <select id="listQuestionDX" resultType="com.lee.exam.entity.PaperQuestion">
+        SELECT
+            paper_question.*, choice_question.question AS QuestionName, choice_question.option_a,choice_question.option_b,choice_question.option_c,choice_question.option_d,choice_question.analysis,choice_question.answer,choice_question.gmt_modified as updateTime
+        FROM
+            paper_question,
+            choice_question
+        WHERE
+            choice_question.id = paper_question.question_id
+          AND choice_question.is_deleted = 0
+          AND paper_question.paerp_id = #{param1}
+          and paper_question.double_check=#{param2}
+    </select>
+    <select id="listQuestionPD" resultType="com.lee.exam.entity.PaperQuestion">
+        SELECT
+            paper_question.*, judge_question.question AS QuestionName ,judge_question.question,judge_question.answer,judge_question.gmt_modified as updateTime,judge_question.analysis
+        FROM
+            paper_question,
+            judge_question
+        WHERE
+            judge_question.id = paper_question.question_id
+          AND judge_question.is_deleted = 0
+          AND paper_question.paerp_id = #{param1}
+          and paper_question.double_check=#{param2}
+    </select>
+</mapper>

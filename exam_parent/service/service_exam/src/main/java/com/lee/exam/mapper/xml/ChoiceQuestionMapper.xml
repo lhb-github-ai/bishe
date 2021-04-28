@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lee.exam.mapper.ChoiceQuestionMapper">
+
+    <select id="findQuestion" resultType="com.lee.exam.entity.ChoiceQuestion">
+        SELECT
+        choice_question.*, bank.name as bankName
+        FROM
+        choice_question, bank
+        <where>
+            bank.id = choice_question.bankId
+            AND choice_question.is_deleted=0
+            <if test="question!=null and question!=''">
+                AND choice_question.question like concat('%',#{question},'%')
+            </if>
+            <if test="bankName!=null and bankName!=''">
+                AND bank.name =#{bankName}
+
+            </if>
+        </where>
+        limit   #{current},#{limit};
+    </select>
+    <select id="totals" resultType="java.lang.Integer">
+        select count(*) from (  SELECT
+        choice_question.*, bank.name as bankName
+        FROM
+        choice_question, bank
+        <where>
+            bank.id = choice_question.bankId
+            AND choice_question.is_deleted=0
+            <if test="question!=null and question!=''">
+                AND choice_question.question like concat('%',#{question},'%')
+            </if>
+            <if test="bankName!=null and bankName!=''">
+                AND bank.name =#{bankName}
+            </if>
+        </where>
+        )s
+    </select>
+    <select id="number" resultType="java.lang.Integer">
+        SELECT
+            count(*)
+        FROM
+            choice_question
+        WHERE choice_question.bankId=bankId
+    </select>
+    <select id="findById" resultType="com.lee.exam.entity.ChoiceQuestion">
+        SELECT
+        choice_question.*, bank.name as bankName
+        FROM
+        choice_question, bank
+              where
+            bank.id = choice_question.bankId
+            AND choice_question.is_deleted=0
+            and  choice_question.id=#{id}
+    </select>
+
+</mapper>
